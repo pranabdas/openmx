@@ -4,22 +4,23 @@ sidebar_label: Setup
 slug: /
 ---
 Please refer to the [OpenMX website](http://www.openmx-square.org) for detailed
-documentations. The installation options will depend on your system type. I am
-installing OpenMX version 3.9 at one of NUS HPC cluster.
+documentations. The installation options will depend on your system architecture
+and available libraries. I am installing OpenMX version **3.9.3** at one of NUS
+HPC clusters.
 
 Get the source code:
 ```bash
 wget http://t-ozaki.issp.u-tokyo.ac.jp/openmx3.9.tar.gz
-wget http://www.openmx-square.org/bugfixed/20Feb11/patch3.9.2.tar.gz
+wget http://www.openmx-square.org/bugfixed/21Aug13/patch3.9.3.tar.gz
 tar -zxvf openmx3.9.tar.gz
 rm openmx3.9.tar.gz
-mv patch3.9.2.tar.gz openmx3.9/source
+mv patch3.9.3.tar.gz openmx3.9/source
 cd openmx3.9/source
-tar -zxvf patch3.9.2.tar.gz
-rm patch3.9.2.tar.gz
+tar -zxvf patch3.9.3.tar.gz
+rm patch3.9.3.tar.gz
 ```
 
-Load Intel XE library:
+Load Intel Math Kernel library:
 ```bash
 module load xe_2015
 ```
@@ -45,9 +46,15 @@ make all -j8
 make install
 ```
 
+Compile the DosMain program:
+```bash
+make DosMain
+```
+
 There is `bandgnu13.c` in the source directory, which resulted in error. It
 needs be compiled using `gcc`:
 ```bash
+module purge
 gcc bandgnu13.c -lm -o bandgnu13
 cp bandgnu13 ../work/
 ```
@@ -57,7 +64,7 @@ Optionally you may add the `openmx3.9/work` PATH to your `.bashrc`.
 export PATH="/home/svu/{username}/openmx3.9/work:$PATH"
 ```
 
-Here is a sample job-script for NUS HPC cluster:
+Here is a sample PBS job-script for NUS HPC cluster:
 ```bash
 #!/bin/bash
 #PBS -q parallel12
@@ -70,3 +77,18 @@ cd $PBS_O_WORKDIR;
 np=$( cat  ${PBS_NODEFILE} |wc -l );
 mpirun -np $np -f ${PBS_NODEFILE} openmx input.txt > output.txt
 ```
+
+:::tip
+
+- Read through the [OpenMX manual](http://www.openmx-square.org/openmx_man3.9/)
+for various details.
+- [OpenMX viewer](http://www.openmx-square.org/viewer/index.html) can help you
+choose certain parameters for the input file e.g., basis configuration. Also,
+consult this [reference table](
+http://www.openmx-square.org/openmx_man3.9/node27.html).
+- [SeeK-path](https://www.materialscloud.org/work/tools/seekpath) tool can help
+you build the k-path.
+- The work directory under OpenMX installation contains lots of example files
+for your reference.
+
+:::

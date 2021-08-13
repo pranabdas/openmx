@@ -3,6 +3,8 @@ module.exports = {
     "setup",
     "silicon",
     "diamond",
+    "dft-u",
+    "resources",
     "license",
   ],
 };

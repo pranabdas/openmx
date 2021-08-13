@@ -16,8 +16,8 @@
     "gh-deploy": "gh-pages -d build"
   },
   "dependencies": {
-    "@docusaurus/core": "0.0.0-3917",
-    "@docusaurus/preset-classic": "0.0.0-3917",
+    "@docusaurus/core": "0.0.0-3926",
+    "@docusaurus/preset-classic": "0.0.0-3926",
     "@mdx-js/react": "^1.6.22",
     "@svgr/webpack": "^5.5.0",
     "clsx": "^1.1.1",

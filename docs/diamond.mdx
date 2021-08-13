@@ -1,19 +1,19 @@
 ---
-title: Bandstructure of diamond
-sidebar_label: Diamond bandstructure
+title: Bandstructure and DOS of diamond
+sidebar_label: Diamond bands and DOS
 ---
 import CodeBlock from '@theme/CodeBlock';
 
 We will run the bandstructure calculation from the OpenMX example file. Here is
 the input file:
 
-import diamond_input from '!!raw-loader!/src/diamond/diamond_input.txt';
+import diamond_in from '!!raw-loader!/src/diamond/diamond.in';
 
-<CodeBlock className="fortran" title="src/diamond/diamond_input.txt">{diamond_input}</CodeBlock>
+<CodeBlock className="fortran" title="src/diamond/diamond.in">{diamond_in}</CodeBlock>
 
 We can run the calculation using mpirun or submit via job-script:
 ```bash
-mpirun -np 12 openmx diamond_input.txt > diamond_output.txt
+mpirun -np 12 openmx diamond.in > diamond.out
 ```
 
 Next step is to extract bandstructure data from `diamond.Band` file:
@@ -21,10 +21,22 @@ Next step is to extract bandstructure data from `diamond.Band` file:
 bandgnu13 diamond.Band
 ```
 
-Finally, we can plot the bandstructure using gnuplot or any program of your
-choice:
+Finally, we can plot the bandstructure using gnuplot or any plotting program of
+your choice:
 ```bash
 gnuplot diamond.GNUBAND
 ```
 
 ![diamond-band.png](/img/diamond-band.png)
+
+## Density of States (DOS)
+
+```bash
+DosMain diamond.Dos.val diamond.Dos.vec
+```
+
+It will ask few options interactively. Use of tetrahedron method is suitable.
+The output file `diamond.DOS.Tetrahedron` will contain the energy, DOS and
+integrated DOS columns.
+
+![diamond-dos.png](/img/diamond-dos.png)

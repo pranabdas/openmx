@@ -2,7 +2,7 @@
 const math = require("remark-math");
 const katex = require("rehype-katex");
 module.exports = {
-  title: "OpenMX",
+  title: "OpenMX tutorial",
   tagline: "DFT calculation using OpenMX",
   url: "https://pranabdas.github.io",
   baseUrl: "/openmx/", // must have a trailing "/"

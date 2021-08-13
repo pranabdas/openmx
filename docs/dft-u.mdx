@@ -1,0 +1,17 @@
+---
+title: DFT+U calculation
+---
+import CodeBlock from '@theme/CodeBlock';
+
+We will calculate the density of states for NiO with and without including
+Hubbard $U$. We will start from the example input file for NiO (check work
+directory under OpenMX installation).
+
+import nio_in from '!!raw-loader!/src/NiO/NiO.in';
+
+<CodeBlock className="fortran" title="src/NiO/NiO.in">{nio_in}</CodeBlock>
+
+Here we compare the density of states with and without considering electronic
+correlation.
+
+![nio-dos.png](/img/nio-dos.png)
