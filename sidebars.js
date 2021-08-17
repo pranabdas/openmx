@@ -4,6 +4,7 @@ module.exports = {
     "silicon",
     "diamond",
     "dft-u",
+    "soc",
     "resources",
     "license",
   ],

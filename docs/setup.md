@@ -5,19 +5,19 @@ slug: /
 ---
 Please refer to the [OpenMX website](http://www.openmx-square.org) for detailed
 documentations. The installation options will depend on your system architecture
-and available libraries. I am installing OpenMX version **3.9.3** at one of NUS
+and available libraries. I am installing OpenMX version **3.9.6** at one of NUS
 HPC clusters.
 
 Get the source code:
 ```bash
 wget http://t-ozaki.issp.u-tokyo.ac.jp/openmx3.9.tar.gz
-wget http://www.openmx-square.org/bugfixed/21Aug13/patch3.9.3.tar.gz
+wget http://www.openmx-square.org/bugfixed/21Aug21/patch3.9.6.tar.gz
 tar -zxvf openmx3.9.tar.gz
 rm openmx3.9.tar.gz
-mv patch3.9.3.tar.gz openmx3.9/source
+mv patch3.9.6.tar.gz openmx3.9/source
 cd openmx3.9/source
-tar -zxvf patch3.9.3.tar.gz
-rm patch3.9.3.tar.gz
+tar -zxvf patch3.9.6.tar.gz
+rm patch3.9.6.tar.gz
 ```
 
 Load Intel Math Kernel library:
@@ -83,8 +83,8 @@ mpirun -np $np -f ${PBS_NODEFILE} openmx input.txt > output.txt
 - Read through the [OpenMX manual](http://www.openmx-square.org/openmx_man3.9/)
 for various details.
 - [OpenMX viewer](http://www.openmx-square.org/viewer/index.html) can help you
-choose certain parameters for the input file e.g., basis configuration. Also,
-consult this [reference table](
+choose certain parameters for the input file e.g., basis configuration. You may
+also consult this [reference table](
 http://www.openmx-square.org/openmx_man3.9/node27.html).
 - [SeeK-path](https://www.materialscloud.org/work/tools/seekpath) tool can help
 you build the k-path.

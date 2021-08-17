@@ -11,6 +11,15 @@ import nio_in from '!!raw-loader!/src/NiO/NiO.in';
 
 <CodeBlock className="fortran" title="src/NiO/NiO.in">{nio_in}</CodeBlock>
 
+:::note
+
+If the initial spin configuration is unpolarized for LDA+U calculations, it is
+required to provide the switch for enhancement of orbital polarization in the
+LDA+U method in the last column of `Atoms.SpeciesAndCoordinates`, `on` means
+that the enhancement is made, `off` means no enhancement.
+
+:::
+
 Here we compare the density of states with and without considering electronic
 correlation.
 
