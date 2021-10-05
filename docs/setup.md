@@ -5,19 +5,19 @@ slug: /
 ---
 Please refer to the [OpenMX website](http://www.openmx-square.org) for detailed
 documentations. The installation options will depend on your system architecture
-and available libraries. I am installing OpenMX version **3.9.6** at one of NUS
+and available libraries. I am installing OpenMX version **3.9.8** at one of NUS
 HPC clusters.
 
 Get the source code:
 ```bash
 wget http://t-ozaki.issp.u-tokyo.ac.jp/openmx3.9.tar.gz
-wget http://www.openmx-square.org/bugfixed/21Aug21/patch3.9.6.tar.gz
+wget http://www.openmx-square.org/bugfixed/21Sep28/patch3.9.8.tar.gz
 tar -zxvf openmx3.9.tar.gz
 rm openmx3.9.tar.gz
-mv patch3.9.6.tar.gz openmx3.9/source
+mv patch3.9.8.tar.gz openmx3.9/source
 cd openmx3.9/source
-tar -zxvf patch3.9.6.tar.gz
-rm patch3.9.6.tar.gz
+tar -zxvf patch3.9.8.tar.gz
+rm patch3.9.8.tar.gz
 ```
 
 Load Intel Math Kernel library:

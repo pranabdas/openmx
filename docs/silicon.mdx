@@ -16,6 +16,11 @@ We can run the calculation using mpirun or submit via job-script:
 mpirun -np 12 openmx silicon.in > silicon.out
 ```
 
+While the calculation is running, you can monitor the convergence by:
+```bash
+grep "dUele" silicon.out | tail
+```
+
 Next step is to extract bandstructure data from `silicon.Band` file:
 ```bash
 bandgnu13 silicon.Band

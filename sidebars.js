@@ -5,6 +5,7 @@ module.exports = {
     "diamond",
     "dft-u",
     "soc",
+    "moment-visualization",
     "resources",
     "license",
   ],
