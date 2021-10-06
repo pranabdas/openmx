@@ -6,6 +6,7 @@ module.exports = {
     "dft-u",
     "soc",
     "moment-visualization",
+    "orbital-projection",
     "resources",
     "license",
   ],
