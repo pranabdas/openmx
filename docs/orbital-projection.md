@@ -5,7 +5,7 @@ sidebar_label: Orbital Projection
 If you want to decompose the individual orbital contributions on the
 bandstructure, here are the relevant keywords:
 
-```bash title="src/SiC/SiC_Primitive_BD.in"
+```bash title="src/SiC/SiC_Primitive_BD.in" showLineNumbers
 Unfolding.Electronic.Band       on     # on|off default=off
 Unfolding.LowerBound         -10.0     # default=-10 eV
 Unfolding.UpperBound           6.0     # default= 10 eV

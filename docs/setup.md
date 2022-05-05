@@ -2,6 +2,7 @@
 title: Setting up OpenMX
 sidebar_label: Setup
 slug: /
+keywords: ["openmx", "first principles calculation", "density functional theory", "DFT", "bandstructure calculation"]
 ---
 Please refer to the [OpenMX website](http://www.openmx-square.org) for detailed
 documentations. The installation options will depend on your system architecture
@@ -9,7 +10,7 @@ and available libraries. I am installing OpenMX version **3.9.9** at one of NUS
 HPC clusters.
 
 Get the source code:
-```bash
+```bash showLineNumbers
 wget http://t-ozaki.issp.u-tokyo.ac.jp/openmx3.9.tar.gz
 wget http://www.openmx-square.org/bugfixed/21Oct17/patch3.9.9.tar.gz
 tar -zxvf openmx3.9.tar.gz
@@ -96,7 +97,7 @@ expertise to assure this was the optimal installation.
 :::
 
 Here is a sample PBS job-script for NUS HPC cluster:
-```bash
+```bash showLineNumbers
 #!/bin/bash
 #PBS -q parallel12
 #PBS -l select=2:ncpus=12:mpiprocs=12:mem=45GB
