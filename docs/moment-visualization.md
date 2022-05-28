@@ -11,4 +11,7 @@ Length factor. You can change the background color from black from the Palette
 Menu which is located in the left of File menu. Here is an example output in
 XCrySDen:
 
-![magnetic-moment-visualization](/img/RuCl3.nc.png)
+<picture>
+  <source type="image/webp" srcset={require("/img/RuCl3.nc.webp").default} />
+  <img src={require("/img/RuCl3.nc.png").default} alt="RuCl3.nc" />
+</picture>

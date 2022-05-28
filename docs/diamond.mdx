@@ -27,7 +27,10 @@ your choice:
 gnuplot diamond.GNUBAND
 ```
 
-![diamond-band.png](/img/diamond-band.png)
+<picture>
+  <source type="image/webp" srcset={require("/img/diamond-band.webp").default} />
+  <img src={require("/img/diamond-band.png").default} alt="diamond-band" />
+</picture>
 
 ## Density of States (DOS)
 
@@ -39,7 +42,10 @@ It will ask few options interactively. Use of tetrahedron method is suitable.
 The output file `diamond.DOS.Tetrahedron` will contain the energy, DOS and
 integrated DOS columns.
 
-![diamond-dos.png](/img/diamond-dos.png)
+<picture>
+  <source type="image/webp" srcset={require("/img/diamond-dos.webp").default} />
+  <img src={require("/img/diamond-dos.png").default} alt="diamond-dos" />
+</picture>
 
 While running the **DosMain** program, you can also choose PDOS for projected
 density of states for each orbitals.
