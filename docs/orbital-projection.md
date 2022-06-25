@@ -27,7 +27,7 @@ look for the section *Unfolding calculation for band structure* towards the
 bottom of the file.
 
 <picture>
-  <source type="image/webp" srcset={require("/img/orbital-proj.webp").default} />
+  <source type="image/webp" srcSet={require("/img/orbital-proj.webp").default} />
   <img src={require("/img/orbital-proj.png").default} alt="orbital-proj" />
 </picture>
 

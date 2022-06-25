@@ -67,7 +67,7 @@ LIB= -L${MKLROOT}/include/fftw -lfftw3 -L$MKLROOT/lib/intel64 -lmkl_blacs_intelm
 
 Once you are set, compile and build the executables:
 ```bash
-make all -j8
+make -j8 all
 make install
 ```
 
@@ -89,12 +89,46 @@ Optionally you may add the `openmx3.9/work` PATH to your `.bashrc`.
 export PATH="/home/svu/{username}/openmx3.9/work:$PATH"
 ```
 
-:::warning
+### Compile using latest Intel oneAPI libraries
 
-Although I was able to compile the code using above flags, I do not have
-expertise to assure this was the optimal installation.
+Download and install latest Intel oneAPI libraries:
+```bash
+wget https://registrationcenter-download.intel.com/akdlm/irc_nas/18673/l_BaseKit_p_2022.2.0.262_offline.sh
 
-:::
+# install a subset of components from base toolkit
+sh ./l_BaseKit_p_2022.2.0.262_offline.sh -a --silent --eula accept --components intel.oneapi.lin.dpcpp-cpp-compiler:intel.oneapi.lin.mkl.devel
+
+# download and install hpc toolkit
+wget https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_HPCKit_p_2022.2.0.191_offline.sh
+sh ./l_HPCKit_p_2022.2.0.191_offline.sh -a --silent --eula accept
+```
+
+Initialize MKL env:
+```bash
+source /opt/intel/oneapi/setvars.sh
+```
+
+OpenMX `makefile` configuration:
+```bash
+MKLROOT = /opt/intel/oneapi/mkl/2022.1.0
+CC = mpiicc -O3 -xHOST -ip -no-prec-div -qopenmp -I${MKLROOT}/include/fftw -I${MKLROOT}/include
+FC = mpiifort -O3 -xHOST -ip -no-prec-div -qopenmp
+LIB= -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lifcore -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -lm -ldl
+```
+
+Compile and install:
+```bash
+make -j4 install
+```
+
+If you like to run tests to verify your installation:
+```
+cd openmx3.9/source
+mpirun -np 4 ./openmx -runtest
+```
+
+You may compare CPU times with [other machines](
+http://www.openmx-square.org/openmx_man3.9/node17.html).
 
 Here is a sample PBS job-script for NUS HPC cluster:
 ```bash showLineNumbers
