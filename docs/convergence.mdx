@@ -1,0 +1,84 @@
+---
+title: Convergence tests
+---
+It is good idea to check the convergence of total energy with respect various
+parameters of our calculation e.g., kinetic energy cutoff, k-grid density,
+lattice constant etc.
+
+## Cutoff energy
+Here is shell script example to programmatically create input files and run
+calculations while varying certain parameter:
+
+import CodeBlock from '@theme/CodeBlock';
+import ecut_convergence from '!!raw-loader!/src/convergence/ecut.sh';
+
+<CodeBlock language="fortran" title="src/convergence/ecut.sh" showLineNumbers>{ecut_convergence}</CodeBlock>
+
+The script will print out total energy for each cutoff energy used. We can plot
+the result:
+```python showLineNumbers
+import numpy as np
+import matplotlib.pyplot as plt
+
+%matplotlib inline
+plt.rcParams["figure.dpi"]=150
+plt.rcParams["figure.facecolor"]="white"
+
+ecut, etot = np.loadtxt("../src/convergence/ecut-vs-etot.dat", unpack=True)
+plt.plot(ecut, etot, "o-", markersize=5)
+plt.xlabel("$E_{cutoff}$ (Ry)")
+plt.ylabel("$E_{tot}$ (Ry)")
+plt.show()
+```
+
+<picture>
+  <source type="image/webp" srcSet={require("/img/convergence-ecut.webp").default} />
+  <img src={require("/img/convergence-ecut.png").default} alt="convergence-ecut" />
+</picture>
+
+:::note
+
+The cutoff energy in OpenMX is not for the basis set as in plane wave methods,
+but for the numerical integrations. Therefore the total energy does not have to
+converge from the upper energy region with respect to the cutoff energy like
+that of plane wave basis set.
+
+:::
+
+## k-grid density
+
+import kgrid_convergence from '!!raw-loader!/src/convergence/kgrid.sh';
+
+<CodeBlock language="fortran" title="src/convergence/kgrid.sh" showLineNumbers>{kgrid_convergence}</CodeBlock>
+
+```python
+k, etot = np.loadtxt("../src/convergence/kgrid-vs-etot.dat", unpack=True)
+plt.plot(k, etot, "o-", markersize=5)
+plt.xlabel("k_grid")
+plt.ylabel("$E_{tot}$ (Ry)")
+plt.show()
+```
+
+<picture>
+  <source type="image/webp" srcSet={require("/img/convergence-kgrid.webp").default} />
+  <img src={require("/img/convergence-kgrid.png").default} alt="convergence-kgrid" />
+</picture>
+
+## Lattice constant
+
+import alat_convergence from '!!raw-loader!/src/convergence/alat.sh';
+
+<CodeBlock language="fortran" title="src/convergence/alat.sh" showLineNumbers>{alat_convergence}</CodeBlock>
+
+```python
+alat, etot = np.loadtxt("../src/convergence/alat-vs-etot.dat", unpack=True)
+plt.plot(alat, etot, "o-", markersize=5)
+plt.xlabel("$a_{lat}$ ($\\AA$)")
+plt.ylabel("$E_{tot}$ (Ry)")
+plt.show()
+```
+
+<picture>
+  <source type="image/webp" srcSet={require("/img/convergence-alat.webp").default} />
+  <img src={require("/img/convergence-alat.png").default} alt="convergence-alat" />
+</picture>
