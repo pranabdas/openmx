@@ -31,4 +31,4 @@ bottom of the file.
   <img src={require("/img/orbital-proj.png").default} alt="orbital-proj" />
 </picture>
 
-More details: <http://www.openmx-square.org/openmx_man3.9/node168.html>
+More details: http://www.openmx-square.org/openmx_man3.9/node168.html

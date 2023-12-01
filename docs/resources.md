@@ -2,4 +2,4 @@
 title: Resources
 ---
 
-- <http://www.openmx-square.org>
+- http://www.openmx-square.org
