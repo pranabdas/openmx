@@ -92,39 +92,34 @@ Optionally you may add the `openmx3.9/work` PATH to your `.bashrc`.
 export PATH="/home/svu/{username}/openmx3.9/work:$PATH"
 ```
 
-### Using recent version of Intel oneAPI
+### Install Intel oneAPI
 
-Download and install latest Intel oneAPI libraries:
-```bash
-wget https://registrationcenter-download.intel.com/akdlm/irc_nas/18673/l_BaseKit_p_2022.2.0.262_offline.sh
+You may use below script to download and install `2023.1` version of Intel
+oneAPI libraries:
 
-# install a subset of components from base toolkit
-sh ./l_BaseKit_p_2022.2.0.262_offline.sh -a --silent --eula accept --components intel.oneapi.lin.dpcpp-cpp-compiler:intel.oneapi.lin.mkl.devel
+import CodeBlock from '@theme/CodeBlock';
+import install_intel_oneapi from '!!raw-loader!/scripts/intel_oneapi_components_2023.1.sh';
 
-# download and install hpc toolkit
-wget https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_HPCKit_p_2022.2.0.191_offline.sh
-sh ./l_HPCKit_p_2022.2.0.191_offline.sh -a --silent --eula accept
-```
+<CodeBlock language="bash" title="scripts/intel_oneapi_components_2023.1.sh" showLineNumbers>{install_intel_oneapi}</CodeBlock>
 
 Initialize OneAPI/MKL env:
+
 ```bash
 source /opt/intel/oneapi/setvars.sh
 ```
 
 OpenMX `makefile` configuration:
 ```bash
-MKLROOT = /opt/intel/oneapi/mkl/2022.1.0
+MKLROOT = /opt/intel/oneapi/mkl/2023.1.0
 CC = mpiicc -O3 -xHOST -ip -no-prec-div -qopenmp -I${MKLROOT}/include/fftw -I${MKLROOT}/include
 FC = mpiifort -O3 -xHOST -ip -no-prec-div -qopenmp
 LIB= -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lifcore -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -lm -ldl
 ```
 
-Compile and install:
-```bash
-make -j4 install
-```
+### Verify installation
 
 If you like to run tests to verify your installation:
+
 ```
 cd openmx3.9/source
 mpirun -np 4 ./openmx -runtest
@@ -135,7 +130,6 @@ http://www.openmx-square.org/openmx_man3.9/node17.html).
 
 Here is a sample PBS job-script for NUS HPC cluster:
 
-import CodeBlock from '@theme/CodeBlock';
 import job_pbs from '!!raw-loader!/scripts/job.pbs';
 
 <CodeBlock language="bash" title="scripts/job.pbs" showLineNumbers>{job_pbs}</CodeBlock>
