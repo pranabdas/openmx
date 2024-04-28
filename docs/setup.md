@@ -116,19 +116,30 @@ FC = mpiifort -O3 -xHOST -ip -no-prec-div -qopenmp
 LIB= -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lifcore -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -lm -ldl
 ```
 
+### Using GNU libraries
+
+Alternatively, you may use following script to install OpenMX using GNU
+libraries:
+
+import openmx_gnu from '!!raw-loader!/scripts/openmx_gnu.sh';
+
+<CodeBlock language="bash" title="scripts/openmx_gnu.sh" showLineNumbers>{openmx_gnu}</CodeBlock>
+
 ### Verify installation
 
 If you like to run tests to verify your installation:
 
 ```
-cd openmx3.9/source
+cd openmx3.9/work
 mpirun -np 4 ./openmx -runtest
 ```
 
 You may compare CPU times with [other machines](
 http://www.openmx-square.org/openmx_man3.9/node17.html).
 
-Here is a sample PBS job-script for NUS HPC cluster:
+### Example PBS script
+
+Here is a sample PBS job script for NUS HPC cluster:
 
 import job_pbs from '!!raw-loader!/scripts/job.pbs';
 
