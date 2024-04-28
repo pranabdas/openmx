@@ -116,6 +116,12 @@ FC = mpiifort -O3 -xHOST -ip -no-prec-div -qopenmp
 LIB= -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lifcore -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -lm -ldl
 ```
 
+Standalone script to perform OpenMX installations:
+
+import openmx_intel from '!!raw-loader!/scripts/openmx_intel.sh';
+
+<CodeBlock language="bash" title="scripts/openmx_intel.sh" showLineNumbers>{openmx_intel}</CodeBlock>
+
 ### Using GNU libraries
 
 Alternatively, you may use following script to install OpenMX using GNU
