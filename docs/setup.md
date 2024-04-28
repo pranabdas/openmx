@@ -21,7 +21,10 @@ tar -zxvf patch3.9.9.tar.gz
 rm patch3.9.9.tar.gz
 ```
 
-Load Intel Math Kernel library:
+### Using Intel libraries
+
+If you already have Intel OneAPI/Math Kernel libraries installed, load the
+respective modulefiles or set environment variables:
 ```bash
 module load xe_2015
 ```
@@ -89,7 +92,7 @@ Optionally you may add the `openmx3.9/work` PATH to your `.bashrc`.
 export PATH="/home/svu/{username}/openmx3.9/work:$PATH"
 ```
 
-### Compile using latest Intel oneAPI libraries
+### Using recent version of Intel oneAPI
 
 Download and install latest Intel oneAPI libraries:
 ```bash
@@ -103,7 +106,7 @@ wget https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_HPCKit_
 sh ./l_HPCKit_p_2022.2.0.191_offline.sh -a --silent --eula accept
 ```
 
-Initialize MKL env:
+Initialize OneAPI/MKL env:
 ```bash
 source /opt/intel/oneapi/setvars.sh
 ```
@@ -131,18 +134,11 @@ You may compare CPU times with [other machines](
 http://www.openmx-square.org/openmx_man3.9/node17.html).
 
 Here is a sample PBS job-script for NUS HPC cluster:
-```bash showLineNumbers
-#!/bin/bash
-#PBS -q parallel12
-#PBS -l select=2:ncpus=12:mpiprocs=12:mem=45GB
-#PBS -j eo
-#PBS -N openmx-test
-source /etc/profile.d/rec_modules.sh
-module load xe_2015
-cd $PBS_O_WORKDIR;
-np=$( cat  ${PBS_NODEFILE} |wc -l );
-mpirun -np $np -f ${PBS_NODEFILE} openmx input.txt > output.txt
-```
+
+import CodeBlock from '@theme/CodeBlock';
+import job_pbs from '!!raw-loader!/scripts/job.pbs';
+
+<CodeBlock language="bash" title="scripts/job.pbs" showLineNumbers>{job_pbs}</CodeBlock>
 
 Input files, Jupyter notebooks, and other source files used in this tutorial can
 be found in my GitHub repository: [pranabdas/openmx](
