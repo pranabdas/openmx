@@ -7,7 +7,7 @@
       "installJupyterlab": true
     },
     "node": {
-      "version": "22"
+      "version": "lts/*"
     }
   },
   "customizations": {

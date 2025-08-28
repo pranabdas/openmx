@@ -54,7 +54,6 @@ const config = {
               {
                 label: "OpenMX tutorial",
                 to: "/",
-                target: "_self",
               },
               {
                 label: "~ ~ ~ Other Docs ~ ~ ~",
