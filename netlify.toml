@@ -1,0 +1,10 @@
+[build]
+  command = """
+  sed -i 's|baseUrl:.*|baseUrl: "/",|I' docusaurus.config.js
+  wget -qO- https://raw.githubusercontent.com/pranabdas/espresso/main/scripts/build_docusaurus.sh | bash
+  """
+
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "lts/*"
