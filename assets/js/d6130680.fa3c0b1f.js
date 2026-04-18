@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkopenmx=self.webpackChunkopenmx||[]).push([["68"],{3654(e){e.exports=JSON.parse('{"metadata":{"permalink":"/openmx/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":0,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
