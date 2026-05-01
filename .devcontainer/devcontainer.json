@@ -2,7 +2,7 @@
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
     "python": {
-      "version": "3.11",
+      "version": "3.12",
       "installTools": true,
       "installJupyterlab": true
     },
