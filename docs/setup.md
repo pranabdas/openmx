@@ -6,20 +6,15 @@ keywords: ["openmx", "first principles calculation", "density functional theory"
 ---
 Please refer to the [OpenMX website](http://www.openmx-square.org) for detailed
 documentations. The installation options will depend on your system architecture
-and available libraries. I am installing OpenMX version **3.9.9** at one of NUS
-HPC clusters.
+and available libraries.
 
-Get the source code:
-```bash showLineNumbers
-wget http://t-ozaki.issp.u-tokyo.ac.jp/openmx3.9.tar.gz
-wget http://www.openmx-square.org/bugfixed/21Oct17/patch3.9.9.tar.gz
-tar -zxvf openmx3.9.tar.gz
-rm openmx3.9.tar.gz
-mv patch3.9.9.tar.gz openmx3.9/source
-cd openmx3.9/source
-tar -zxvf patch3.9.9.tar.gz
-rm patch3.9.9.tar.gz
-```
+### Using GNU libraries
+
+I used following script to build OpenMX using GNU libraries:
+
+import openmx_gnu from '!!raw-loader!/scripts/openmx_gnu.sh';
+
+<CodeBlock language="bash" title="scripts/openmx_gnu.sh" showLineNumbers>{openmx_gnu}</CodeBlock>
 
 ### Using Intel libraries
 
@@ -122,26 +117,19 @@ import openmx_intel from '!!raw-loader!/scripts/openmx_intel.sh';
 
 <CodeBlock language="bash" title="scripts/openmx_intel.sh" showLineNumbers>{openmx_intel}</CodeBlock>
 
-### Using GNU libraries
-
-Alternatively, you may use following script to install OpenMX using GNU
-libraries:
-
-import openmx_gnu from '!!raw-loader!/scripts/openmx_gnu.sh';
-
-<CodeBlock language="bash" title="scripts/openmx_gnu.sh" showLineNumbers>{openmx_gnu}</CodeBlock>
 
 ### Verify installation
 
 If you like to run tests to verify your installation:
 
-```
+```bash
 cd openmx3.9/work
-mpirun -np 4 ./openmx -runtest
+# specify number of OpenMP threads with `-nt` flag
+mpirun -np 4 ./openmx -runtest -nt 1
 ```
 
 You may compare CPU times with [other machines](
-http://www.openmx-square.org/openmx_man3.9/node17.html).
+https://www.openmx-square.org/openmx_man4.0/s6_auto-test.html).
 
 ### Example PBS script
 
@@ -157,13 +145,13 @@ https://github.com/pranabdas/openmx/).
 
 :::tip
 
-- Read through the [OpenMX manual](http://www.openmx-square.org/openmx_man3.9/)
+- Read through the [OpenMX manual](https://www.openmx-square.org/openmx_man4.0/)
 for various details.
-- [OpenMX viewer](http://www.openmx-square.org/viewer/index.html) can help you
+- [OpenMX viewer](http://www.openmx-square.org/viewer/) can help you
 choose certain parameters for the input file e.g., basis configuration. You may
 also consult this [reference table](
-http://www.openmx-square.org/openmx_man3.9/node27.html).
-- [SeeK-path](https://www.materialscloud.org/work/tools/seekpath) tool can help
+https://www.openmx-square.org/openmx_man4.0/s12_3_basis-db2019.html).
+- [SeeK-path](https://seekpath.materialscloud.io) tool can help
 you build the k-path.
 - The work directory under OpenMX installation contains lots of example files
 for your reference.
