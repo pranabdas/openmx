@@ -8,7 +8,7 @@ set -e
 
 OPENMX_VER="4.0"
 DOWNLOAD_URL="https://www.openmx-square.org/openmx${OPENMX_VER}.tar.gz"
-INSTALL_DIR="${HOME}/openmx/${OPENMX_VER}"
+INSTALL_DIR="${HOME}/openmx${OPENMX_VER}"
 NUM_PROCS=$(nproc)
 
 BUILD_DIR=/tmp/_build_$(date +'%Y%m%d%H%M%S')
@@ -55,7 +55,7 @@ sed -i 's/^\s*FC\s*=.*/FC = mpif90 -O3 -ffast-math -fallow-argument-mismatch -fo
 sed -i 's/^\s*LIB\s*=.*/LIB = -lfftw3 -lmpi -lmpi_mpifh -lscalapack -llapack -lblas -lgfortran/' ${BUILD_DIR}/openmx${OPENMX_VER}/source/makefile
 
 make all  # have issues with parallel make
-sudo make install
+make install
 
 if [ ! -d ${INSTALL_DIR} ]; then
   mkdir -p ${INSTALL_DIR}

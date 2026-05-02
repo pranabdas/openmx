@@ -1,60 +1,77 @@
 #!/bin/bash
 # this script is not compatible with Bourne shell (sh), use bash instead:
 # bash openmx_intel.sh
-# tested on ubuntu 22.04
+# tested on ubuntu 24.04
 
 # exit upon any command failure
 set -e
 
-OPENMX_VER="3.9.9"
-MINOR_VER="3.9"
-PATCH_URL="https://www.openmx-square.org/bugfixed/21Oct17/patch${OPENMX_VER}.tar.gz"
-DOWNLOAD_URL="https://www.openmx-square.org/openmx${MINOR_VER}.tar.gz"
-INSTALL_DIR="${HOME}/openmx/${OPENMX_VER}"
+OPENMX_VER="4.0"
+DOWNLOAD_URL="https://www.openmx-square.org/openmx${OPENMX_VER}.tar.gz"
+INSTALL_DIR="${HOME}/openmx${OPENMX_VER}"
 NUM_PROCS=$(nproc)
+ONEAPI_ROOT=/opt/intel-2025.3.1
 
 BUILD_DIR=/tmp/_build_$(date +'%Y%m%d%H%M%S')
 CWD=${PWD}
 mkdir ${BUILD_DIR} && cd $_
 
-source /opt/intel/oneapi/setvars.sh
+# install oneapi deps
+sudo apt update
+sudo apt install -y --no-install-recommends \
+  ca-certificates \
+  gawk \
+  g++ \
+  gcc \
+  gfortran \
+  ncurses-term \
+  wget
+
+# install oneapi
+pkgs=(
+    "https://registrationcenter-download.intel.com/akdlm/IRC_NAS/233a8b7a-ec95-4e51-bc5f-9dcd4f0d1dc3/intel-onetbb-2022.3.1.402_offline.sh"
+    "https://registrationcenter-download.intel.com/akdlm/IRC_NAS/0d61d48a-4fe8-4cb2-bd9d-94d2c19c6227/intel-dpcpp-cpp-compiler-2025.3.2.26_offline.sh"
+    "https://registrationcenter-download.intel.com/akdlm/IRC_NAS/3e53d136-2870-4836-adb1-892b558fa34a/intel-fortran-compiler-2025.3.2.25_offline.sh"
+    "https://registrationcenter-download.intel.com/akdlm/IRC_NAS/c477188f-0ba1-4213-8945-22f16ebc8ecb/intel-oneccl-2021.17.2.6_offline.sh"
+    "https://registrationcenter-download.intel.com/akdlm/IRC_NAS/6a17080f-f0de-41b9-b587-52f92512c59a/intel-onemkl-2025.3.1.11_offline.sh"
+)
+
+for pkg in "${pkgs[@]}"; do
+    wget $pkg
+    sudo sh ./$( basename $pkg ) -a --silent --eula accept --install-dir $ONEAPI_ROOT
+    rm -f $( basename $pkg )
+done
+
+source ${ONEAPI_ROOT}/setvars.sh
 
 wget ${DOWNLOAD_URL}
-tar -xf openmx${MINOR_VER}.tar.gz
-rm openmx${MINOR_VER}.tar.gz
-cd openmx${MINOR_VER}/source
-wget ${PATCH_URL}
-tar -xf patch${OPENMX_VER}.tar.gz
-rm patch${OPENMX_VER}.tar.gz
-mv kpoint.in ../work/
+tar -xf openmx${OPENMX_VER}.tar.gz
+rm openmx${OPENMX_VER}.tar.gz
+cd openmx${OPENMX_VER}/source
 
-# edit makefile
-# MKLROOT = /opt/intel/mkl
-# CC = mpiicc -O3 -xHOST -ip -no-prec-div -qopenmp -I${MKLROOT}/include/fftw -I${MKLROOT}/include
-# FC = mpiifort -O3 -xHOST -ip -no-prec-div -qopenmp
-# LIB = -L${MKLROOT}/include/fftw -lfftw3 -L$MKLROOT/lib/intel64 -lmkl_blacs_intelmpi_lp64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -lpthread -lifcore
+# edit the makefile
+# MKLROOT = /opt/intel-2025.3.1/mkl/2025.3
+# CC = mpiicx -O3 -qopenmp -fcommon -Wno-error=implicit-function-declaration -ipo  -I${MKLROOT}/include/fftw -I${MKLROOT}/include
+# FC = mpiifx -O3 -qopenmp -ipo
+# LIB = -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lifcore -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -lm -ldl
 
-sed -i 's/^\s*MKLROOT\s*=.*/MKLROOT = \/opt\/intel\/oneapi\/mkl\/2023\.1\.0/' ${BUILD_DIR}/openmx${MINOR_VER}/source/makefile
-sed -i 's/^\s*CC\s*=.*/CC = mpiicc -O3 -xHOST -ip -no-prec-div -qopenmp -I${MKLROOT}\/include\/fftw -I${MKLROOT}\/include/' ${BUILD_DIR}/openmx${MINOR_VER}/source/makefile
-sed -i 's/^\s*FC\s*=.*/FC = mpiifort -O3 -xHOST -ip -no-prec-div -qopenmp/' ${BUILD_DIR}/openmx${MINOR_VER}/source/makefile
-sed -i 's/^\s*LIB\s*=.*/LIB = -L${MKLROOT}\/lib\/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lifcore -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -lm -ldl/' ${BUILD_DIR}/openmx${MINOR_VER}/source/makefile
+sed -i "s|^[[:space:]]*MKLROOT[[:space:]]*=.*|MKLROOT = ${ONEAPI_ROOT}/mkl/2025.3|" "${BUILD_DIR}/openmx${OPENMX_VER}/source/makefile"
+sed -i 's|^[[:space:]]*CC[[:space:]]*=.*|CC = mpiicx -O3 -qopenmp -fcommon -Wno-error=implicit-function-declaration -ipo -I${MKLROOT}/include/fftw -I${MKLROOT}/include|' "${BUILD_DIR}/openmx${OPENMX_VER}/source/makefile"
+sed -i 's|^[[:space:]]*FC[[:space:]]*=.*|FC = mpiifx -O3 -qopenmp -ipo|' "${BUILD_DIR}/openmx${OPENMX_VER}/source/makefile"
+sed -i 's|^[[:space:]]*LIB[[:space:]]*=.*|LIB = -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lifcore -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -lm -ldl|' "${BUILD_DIR}/openmx${OPENMX_VER}/source/makefile"
 
-make DosMain
-make -j${NUM_PROCS} all
-sudo make install
-mpiicc bandgnu13.c -lm -o bandgnu13
-cp bandgnu13 ../work/
+make all
+make install
 
 if [ ! -d ${INSTALL_DIR} ]; then
   mkdir -p ${INSTALL_DIR}
 fi
 
 cd ${CWD}
-cp -r ${BUILD_DIR}/openmx${MINOR_VER}/* ${INSTALL_DIR}
+cp -r ${BUILD_DIR}/openmx${OPENMX_VER}/* ${INSTALL_DIR}
 rm -rf ${BUILD_DIR}
 
 # run tests (calculations need to be launched from ${INSTALL_DIR}/work)
 # cd ${INSTALL_DIR}/work
-# source /opt/intel/oneapi/setvars.sh
-# export OMP_NUM_THREADS=1
-# mpirun -np ${NUM_PROCS} ./openmx -runtest
+# source ${ONEAPI_ROOT}/setvars.sh
+# mpirun -np ${NUM_PROCS} ./openmx -runtest -nt 1

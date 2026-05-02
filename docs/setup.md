@@ -17,101 +17,8 @@ import openmx_gnu from '!!raw-loader!/scripts/openmx_gnu.sh';
 <CodeBlock language="bash" title="scripts/openmx_gnu.sh" showLineNumbers>{openmx_gnu}</CodeBlock>
 
 ### Using Intel libraries
+Intel OneAPI libraries gives better performance compared to GNU libraries.
 
-If you already have Intel OneAPI/Math Kernel libraries installed, load the
-respective modulefiles or set environment variables:
-```bash
-module load xe_2015
-```
-
-You may check the necessary environment variables:
-```bash
-echo $LD_LIBRARY_PATH
-echo $MKLROOT
-env
-```
-
-Open the `makefile` and specify `CC`, `FC`, and `LIB` flags according to your
-system and libraries. I am using MPI and Intel Math Kernel Libraries.
-```bash
-CC = mpicc -O3 -qopenmp -I${MKLROOT}/include/fftw -I${MKLROOT}/include
-FC = mpif90 -O3 -qopenmp -I${MKLROOT}/include/fftw
-LIB= -L${MKLROOT}/include/fftw -lfftw3 -L$MKLROOT/lib/intel64 -lmkl_blacs_intelmpi_lp64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -lpthread -lifcore
-```
-
-:::warning
-
-Currently I found some issues with the Intel license server while using
-`xe_2015` module at NUS HPC clusters. After the module load, you need to export
-following `ENV` variable:
-```bash
-export "INTEL_LICENSE_FILE=/app1/centos6.3/Intel/xe_2015/composer_xe_2015.3.187/licenses"
-```
-
-:::
-
-If you have `xe_2018` (instead of `xe_2015`):
-```bash
-module load xe_2018
-```
-
-Use following flags:
-```bash
-MKLROOT = /opt/intel/mkl
-CC = mpiicc -O3 -xHOST -ip -no-prec-div -qopenmp -I${MKLROOT}/include/fftw -I${MKLROOT}/include
-FC = mpiifort -O3 -xHOST -ip -no-prec-div -qopenmp
-LIB= -L${MKLROOT}/include/fftw -lfftw3 -L$MKLROOT/lib/intel64 -lmkl_blacs_intelmpi_lp64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -lpthread -lifcore
-```
-
-Once you are set, compile and build the executables:
-```bash
-make -j8 all
-make install
-```
-
-Compile the DosMain program:
-```bash
-make DosMain
-```
-
-There is `bandgnu13.c` in the source directory, which resulted in error. It
-needs be compiled using `gcc`:
-```bash
-module purge
-gcc bandgnu13.c -lm -o bandgnu13
-cp bandgnu13 ../work/
-```
-
-Optionally you may add the `openmx3.9/work` PATH to your `.bashrc`.
-```bash
-export PATH="/home/svu/{username}/openmx3.9/work:$PATH"
-```
-
-### Install Intel oneAPI
-
-You may use below script to download and install `2023.1` version of Intel
-oneAPI libraries:
-
-import CodeBlock from '@theme/CodeBlock';
-import install_intel_oneapi from '!!raw-loader!/scripts/intel_oneapi_components_2023.1.sh';
-
-<CodeBlock language="bash" title="scripts/intel_oneapi_components_2023.1.sh" showLineNumbers>{install_intel_oneapi}</CodeBlock>
-
-Initialize OneAPI/MKL env:
-
-```bash
-source /opt/intel/oneapi/setvars.sh
-```
-
-OpenMX `makefile` configuration:
-```bash
-MKLROOT = /opt/intel/oneapi/mkl/2023.1.0
-CC = mpiicc -O3 -xHOST -ip -no-prec-div -qopenmp -I${MKLROOT}/include/fftw -I${MKLROOT}/include
-FC = mpiifort -O3 -xHOST -ip -no-prec-div -qopenmp
-LIB= -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lifcore -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -lm -ldl
-```
-
-Standalone script to perform OpenMX installations:
 
 import openmx_intel from '!!raw-loader!/scripts/openmx_intel.sh';
 
@@ -123,9 +30,14 @@ import openmx_intel from '!!raw-loader!/scripts/openmx_intel.sh';
 If you like to run tests to verify your installation:
 
 ```bash
-cd openmx3.9/work
+cd openmx4.0/work
 # specify number of OpenMP threads with `-nt` flag
 mpirun -np 4 ./openmx -runtest -nt 1
+```
+
+Optionally you may add the `openmx4.0/work` PATH to your `.bashrc`.
+```bash
+export PATH="${INSTALL_DIR}/openmx4.0/work:$PATH"
 ```
 
 You may compare CPU times with [other machines](
