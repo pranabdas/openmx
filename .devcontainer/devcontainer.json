@@ -1,13 +1,8 @@
 {
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
-    "python": {
-      "version": "3.12",
-      "installTools": true,
-      "installJupyterlab": true
-    },
     "node": {
-      "version": "lts/*"
+      "version": "22"
     }
   },
   "customizations": {
