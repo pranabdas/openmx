@@ -26,6 +26,6 @@ of the orbitally decomposed spectral weights can be found in `{system}.out`;
 look for the section *Unfolding calculation for band structure* towards the
 bottom of the file.
 
-<img src={require("../static/img/orbital-proj.webp").default} class="inv-hue-rot-180" alt="orbital-proj"/>
+<img src={require("../static/img/orbital-proj.webp").default} className="inv-hue-rot-180" alt="orbital-proj"/>
 
-More details: http://www.openmx-square.org/openmx_man3.9/node168.html
+More details: https://www.openmx-square.org/openmx_man4.0/s55_1_analysis.html

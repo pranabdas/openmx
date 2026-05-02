@@ -1,0 +1,71 @@
+---
+title: Setting up OpenMX
+sidebar_label: Setup
+slug: /
+keywords: ["openmx", "first principles calculation", "density functional theory", "DFT", "bandstructure calculation"]
+---
+Please refer to the [OpenMX website](http://www.openmx-square.org) for detailed
+documentation. The installation options will depend on your system architecture
+and available libraries.
+
+### Using GNU libraries
+
+I used the following script to build OpenMX using GNU libraries:
+
+import CodeBlock from '@theme/CodeBlock';
+import openmx_gnu from '!!raw-loader!/scripts/openmx_gnu.sh';
+
+<CodeBlock language="bash" title="scripts/openmx_gnu.sh" showLineNumbers>{openmx_gnu}</CodeBlock>
+
+### Using Intel libraries
+Intel OneAPI libraries give better performance compared to GNU libraries.
+
+
+import openmx_intel from '!!raw-loader!/scripts/openmx_intel.sh';
+
+<CodeBlock language="bash" title="scripts/openmx_intel.sh" showLineNumbers>{openmx_intel}</CodeBlock>
+
+
+### Verify installation
+
+You can verify your installation by running the included tests:
+
+```bash
+cd openmx4.0/work
+# specify number of OpenMP threads with `-nt` flag
+mpirun -np 4 ./openmx -runtest -nt 1
+```
+
+Optionally you may add the `openmx4.0/work` to the `PATH` via `~/.bashrc`.
+```bash
+export PATH="${INSTALL_DIR}/openmx4.0/work:$PATH"
+```
+
+You may compare CPU times with [other machines](
+https://www.openmx-square.org/openmx_man4.0/s6_auto-test.html).
+
+### Example PBS script
+
+Here is a sample PBS job script for NUS HPC cluster:
+
+import job_pbs from '!!raw-loader!/scripts/job.pbs';
+
+<CodeBlock language="bash" title="scripts/job.pbs" showLineNumbers>{job_pbs}</CodeBlock>
+
+Input files, Jupyter notebooks, and other source files used in this tutorial can
+be found in my GitHub repository: [pranabdas/openmx](
+https://github.com/pranabdas/openmx/).
+
+
+### References
+
+- Read through the [OpenMX manual](https://www.openmx-square.org/openmx_man4.0/)
+for various details.
+- [OpenMX viewer](http://www.openmx-square.org/viewer/) can help you
+choose certain parameters for the input file e.g., basis configuration. You may
+also consult this [reference table](
+https://www.openmx-square.org/openmx_man4.0/s12_3_basis-db2019.html).
+- [SeeK-path](https://seekpath.materialscloud.io) tool can help
+you build the k-path.
+- The `work` directory under OpenMX installation contains lots of examples for
+your reference.
