@@ -45,11 +45,11 @@ if ! [ -f /usr/lib/x86_64-linux-gnu/libscalapack.so ] ; then
   fi
 fi
 
-wget ${DOWNLOAD_URL}
+wget -q ${DOWNLOAD_URL}
 tar -xf openmx${OPENMX_VER}.tar.gz
 rm openmx${OPENMX_VER}.tar.gz
 cd openmx${OPENMX_VER}/source
-wget ${PATCH_URL}
+wget -q ${PATCH_URL}
 tar -xf patch${OPENMX_PATCH_VER}.tar.gz
 rm patch${OPENMX_PATCH_VER}.tar.gz
 mv GaAs.dat ../work/
