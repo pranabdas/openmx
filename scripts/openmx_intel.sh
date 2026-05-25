@@ -7,8 +7,10 @@
 set -e
 
 OPENMX_VER="4.0"
+OPENMX_PATCH_VER="4.0.1"
 DOWNLOAD_URL="https://www.openmx-square.org/openmx${OPENMX_VER}.tar.gz"
-INSTALL_DIR="${HOME}/openmx${OPENMX_VER}"
+PATCH_URL="https://www.openmx-square.org/bugfixed/26May08/patch${OPENMX_PATCH_VER}.tar.gz"
+INSTALL_DIR="${HOME}/openmx${OPENMX_PATCH_VER}"
 NUM_PROCS=$(nproc)
 ONEAPI_ROOT=/opt/intel-2025.3.1
 
@@ -48,6 +50,10 @@ wget ${DOWNLOAD_URL}
 tar -xf openmx${OPENMX_VER}.tar.gz
 rm openmx${OPENMX_VER}.tar.gz
 cd openmx${OPENMX_VER}/source
+wget ${PATCH_URL}
+tar -xf patch${OPENMX_PATCH_VER}.tar.gz
+rm patch${OPENMX_PATCH_VER}.tar.gz
+mv GaAs.dat ../work/
 
 # edit the makefile
 # MKLROOT = /opt/intel-2025.3.1/mkl/2025.3
