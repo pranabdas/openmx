@@ -14,13 +14,18 @@ INSTALL_DIR="${HOME}/openmx${OPENMX_PATCH_VER}"
 NUM_PROCS=$(nproc)
 ONEAPI_ROOT=/opt/intel-2025.3.1
 
+SUDO_PREFIX=""
+if [ "$EUID" -ne 0 ]; then
+  SUDO_PREFIX="sudo "
+fi
+
 BUILD_DIR=/tmp/_build_$(date +'%Y%m%d%H%M%S')
 CWD=${PWD}
 mkdir ${BUILD_DIR} && cd $_
 
 # install oneapi deps
-sudo apt update
-sudo apt install -y --no-install-recommends \
+${SUDO_PREFIX}apt update
+${SUDO_PREFIX}apt install -y --no-install-recommends \
   ca-certificates \
   gawk \
   g++ \
@@ -40,7 +45,7 @@ pkgs=(
 
 for pkg in "${pkgs[@]}"; do
     wget $pkg
-    sudo sh ./$( basename $pkg ) -a --silent --eula accept --install-dir $ONEAPI_ROOT
+    ${SUDO_PREFIX}sh ./$( basename $pkg ) -a --silent --eula accept --install-dir $ONEAPI_ROOT
     rm -f $( basename $pkg )
 done
 
@@ -70,11 +75,11 @@ make all
 make install
 
 if [ ! -d ${INSTALL_DIR} ]; then
-  mkdir -p ${INSTALL_DIR}
+  ${SUDO_PREFIX}mkdir -p ${INSTALL_DIR}
 fi
 
 cd ${CWD}
-cp -r ${BUILD_DIR}/openmx${OPENMX_VER}/* ${INSTALL_DIR}
+${SUDO_PREFIX}cp -r ${BUILD_DIR}/openmx${OPENMX_VER}/* ${INSTALL_DIR}
 rm -rf ${BUILD_DIR}
 
 # run tests (calculations need to be launched from ${INSTALL_DIR}/work)

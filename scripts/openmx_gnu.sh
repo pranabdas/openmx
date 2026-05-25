@@ -13,12 +13,17 @@ PATCH_URL="https://www.openmx-square.org/bugfixed/26May08/patch${OPENMX_PATCH_VE
 INSTALL_DIR="${HOME}/openmx${OPENMX_PATCH_VER}"
 NUM_PROCS=$(nproc)
 
+SUDO_PREFIX=""
+if [ "$EUID" -ne 0 ]; then
+  SUDO_PREFIX="sudo "
+fi
+
 BUILD_DIR=/tmp/_build_$(date +'%Y%m%d%H%M%S')
 CWD=${PWD}
 mkdir ${BUILD_DIR} && cd $_
 
-sudo apt update && sudo apt upgrade -y
-sudo apt install --no-install-recommends -y \
+${SUDO_PREFIX}apt update
+${SUDO_PREFIX}apt install --no-install-recommends -y \
   autoconf \
   build-essential \
   ca-certificates \
@@ -64,10 +69,10 @@ make all  # have issues with parallel make
 make install
 
 if [ ! -d ${INSTALL_DIR} ]; then
-  mkdir -p ${INSTALL_DIR}
+  ${SUDO_PREFIX}mkdir -p ${INSTALL_DIR}
 fi
 
-cp -r ${BUILD_DIR}/openmx${OPENMX_VER}/* ${INSTALL_DIR}
+${SUDO_PREFIX}cp -r ${BUILD_DIR}/openmx${OPENMX_VER}/* ${INSTALL_DIR}
 rm -rf ${BUILD_DIR}
 
 # run tests (calculations need to be launched from ${INSTALL_DIR}/work)
