@@ -2,6 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/pranabdas/openmx/actions/workflows/deploy-gh-pages.yml"><img src="https://github.com/pranabdas/openmx/actions/workflows/deploy-gh-pages.yml/badge.svg" alt="Deploy gh-pages status"></a>
+  <a href="https://github.com/pranabdas/openmx/actions/workflows/build-test.yml"><img src="https://github.com/pranabdas/openmx/actions/workflows/build-test.yml/badge.svg" alt="Build test status"></a>
 </p>
 
 This repository contains various input files, Jupyter notebooks, and other

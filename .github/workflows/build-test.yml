@@ -1,0 +1,30 @@
+name: Build tests
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-test.yml
+      - scripts/*.sh
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-test.yml
+      - scripts/*.sh
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flavor:
+          - gnu
+          - intel
+      fail-fast: false
+
+    steps:
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+
+      - name: Build ${{ matrix.flavor }} flavor
+        run: bash scripts/openmx_${{ matrix.flavor }}.sh
